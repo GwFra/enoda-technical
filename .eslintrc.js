@@ -11,7 +11,6 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:import/recommended",
   ],
-  overrides: [],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
