@@ -1,48 +1,58 @@
-import Header from "@/app/ui/header";
-import React from "react";
-import styles from "./page.module.css";
+import ListingContainer from "@/app/ui/listings/container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 
+const listings = [
+  {
+    id: 1,
+    title: "This is the first listing",
+    quantity: 50,
+    price: 1000,
+    timing: {
+      startDate: Date.now() + 20000,
+      endDate: Date.now() + 30000,
+    },
+  },
+  {
+    id: 2,
+    title: "This is the second listing",
+    quantity: 50,
+    price: 1000,
+    timing: {
+      startDate: Date.now() + 20000,
+      endDate: Date.now() + 30000,
+    },
+  },
+  {
+    id: 3,
+    title: "This is the third listing",
+    quantity: 50,
+    price: 1000,
+    timing: {
+      startDate: Date.now() + 20000,
+      endDate: Date.now() + 30000,
+    },
+  },
+];
+
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div style={{ height: "100%", width: "100%" }}>
-        <Grid
-          container
-          direction="column"
-          spacing={2}
-          xs={12}
-          style={{ height: "100%" }}
-        >
-          <Grid item xs={1}>
-            <Header />
-          </Grid>
-          <Grid
-            item
-            xs={11}
-            style={{ padding: "16px 64px 0px", height: "100%" }}
-          >
-            <Grid container spacing={2} style={{ height: "100%" }}>
-              <Grid item xs={3}>
-                <p>
-                  <Typography>Left side</Typography>
-                  This is where you need to login to see all the electricty
-                  being sold
-                </p>
-                <Link href="/login">
-                  <Button>Log in</Button>
-                </Link>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography>Main content</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </div>
-    </main>
+    <Grid container spacing={2} style={{ height: "100%" }}>
+      <Grid item xs={3}>
+        <p>
+          <Typography>Left side</Typography>
+          This is where you need to login to see all the electricty being sold
+        </p>
+        <Link href="/login">
+          <Button>Log in</Button>
+        </Link>
+      </Grid>
+      <Grid item xs={9}>
+        <Typography>Main content</Typography>
+        <ListingContainer listings={listings} />
+      </Grid>
+    </Grid>
   );
 }
