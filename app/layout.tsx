@@ -5,6 +5,7 @@ import "./globals.css";
 import styles from "./page.module.css";
 import { Grid } from "@mui/material";
 import Header from "@/app/ui/header";
+import Navigation from "./ui/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,9 +34,12 @@ export default function RootLayout({
               <Grid item xs={1}>
                 <Header />
               </Grid>
+              <Grid item xs={1}>
+                <Navigation />
+              </Grid>
               <Grid
                 item
-                xs={11}
+                xs={10}
                 style={{ padding: "16px 64px 0px", height: "100%" }}
               >
                 {children}
