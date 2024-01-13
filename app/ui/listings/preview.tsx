@@ -13,9 +13,9 @@ import {
   // CardMedia,
   Typography,
 } from "@mui/material";
+import BidConfirmation from "@/app/ui/bid/bidConfirmation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import axios from "axios";
 import "dotenv/config";
 
 type Props = {
@@ -46,7 +46,7 @@ function determineTiming(
 }
 
 export default function ListingPreview(props: Props) {
-  const [placingBid, setPlacingBid] = React.useState<boolean>(false);
+  const [bidModal, setbidModal] = React.useState<boolean>(false);
   const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
@@ -62,49 +62,19 @@ export default function ListingPreview(props: Props) {
   const timingString = determineTiming(hasStarted, hasEnded, start, end);
 
   const handleInitialBidPlacement = () => {
-    setPlacingBid(true);
+    setbidModal(true);
   };
   const handleClose = () => {
-    setPlacingBid(false);
-  };
-
-  const handleClick = async () => {
-    // get token and add it to react state - probably not wise but easy peasy
-    try {
-      //
-      await axios.put(`${process.env.BACKEND_URL}/bids`, { listingId: id });
-    } catch (e) {
-      console.log(e);
-    }
+    setbidModal(false);
   };
 
   return (
     <div>
-      <Modal open={placingBid} onClose={handleClose}>
-        <Paper
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "400px",
-            height: "200px",
-            transform: "translate(-50%, -50%)",
-          }}
-          elevation={24}
-        >
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <div>Are you sure you want place a bid </div>
-          </Box>
-        </Paper>
-      </Modal>
+      <BidConfirmation
+        isOpen={bidModal}
+        handleClose={handleClose}
+        listingId={id}
+      />
       <Paper elevation={24} style={{ width: "100%" }}>
         <Card
           variant="outlined"
