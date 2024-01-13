@@ -5,6 +5,8 @@ import "./globals.css";
 import styles from "./page.module.css";
 import { Grid } from "@mui/material";
 import Header from "@/app/ui/header";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+// import { Session } from "@/app/api/auth/session";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,28 +23,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className={styles.main}>
-          <div style={{ height: "100%", width: "100%" }}>
-            <Grid
-              container
-              direction="column"
-              spacing={2}
-              xs={12}
-              style={{ height: "100%" }}
-            >
-              <Grid item xs={1}>
-                <Header />
-              </Grid>
+        {/* <Session> */}
+        <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
+          <main className={styles.main}>
+            <div style={{ height: "100%", width: "100%" }}>
               <Grid
-                item
-                xs={11}
-                style={{ padding: "16px 64px 0px", height: "100%" }}
+                container
+                direction="column"
+                spacing={2}
+                style={{ height: "100%" }}
               >
-                {children}
+                <Grid item xs={1}>
+                  <Header />
+                </Grid>
+                <Grid
+                  item
+                  xs={11}
+                  style={{ padding: "16px 64px 0px", height: "100%" }}
+                >
+                  {children}
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-        </main>
+            </div>
+          </main>
+        </GoogleOAuthProvider>
+        {/* </Session> */}
       </body>
     </html>
   );
