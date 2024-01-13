@@ -17,7 +17,6 @@ export default function BidsPage() {
       const listingsRequests = await Promise.all(getListingsWithBids);
       const listings = listingsRequests.map(({ data }) => data);
       setBids(listings);
-      // setBids(bids.data);
     };
     getBids();
   }, []);
@@ -29,7 +28,7 @@ export default function BidsPage() {
   ));
 
   return (
-    <Box style={{ display: "flex", alignItems: "center" }}>
+    <Box style={{ display: "flex", justifyContent: "center" }}>
       <List>{bidsDisplay}</List>
     </Box>
   );

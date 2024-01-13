@@ -17,7 +17,7 @@ export default function ListingContainer(props: any) {
     </ListItem>
   ));
   return (
-    <Box style={{ display: "flex", alignItems: "center" }}>
+    <Box style={{ display: "flex", justifyContent: "center" }}>
       <List>{listingsDisplay}</List>
     </Box>
   );

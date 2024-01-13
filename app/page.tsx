@@ -1,37 +1,23 @@
+"use client";
+
 import ListingContainer from "@/app/ui/listings/container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-
-const listings = [
-  {
-    id: 1,
-    title: "This is the first listing",
-    quantity: 50,
-    price: 1000,
-    start: Date.now() + 20000,
-    end: Date.now() + 30000,
-  },
-  {
-    id: 2,
-    title: "This is the second listing",
-    quantity: 50,
-    price: 1000,
-    start: Date.now() + 20000,
-    end: Date.now() + 30000,
-  },
-  {
-    id: 3,
-    title: "This is the third listing",
-    quantity: 50,
-    price: 1000,
-    start: Date.now() + 20000,
-    end: Date.now() + 30000,
-  },
-];
+import React from "react";
+import axios from "axios";
 
 export default function Home() {
+  // TEMP
+  const [listings, setListings] = React.useState<any>([]);
+  React.useEffect(() => {
+    const getListings = async () => {
+      const { data } = await axios.get(`${process.env.BACKEND_URL}/listings`);
+      setListings(data);
+    };
+    getListings();
+  }, []);
   return (
     <Grid container spacing={2} style={{ height: "100%" }}>
       <Grid item xs={3}>

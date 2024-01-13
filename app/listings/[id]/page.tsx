@@ -1,20 +1,27 @@
 "use client";
 
+import React from "react";
+import axios from "axios";
 import ListingPreview from "@/app/ui/listings/preview";
-import { usePathname } from "next/navigation";
-
-const mockListing = {
-  id: 1,
-  title: "This is the first listing",
-  quantity: 50,
-  price: 1000,
-  start: Date.now() + 20000,
-  end: Date.now() + 30000,
-};
 
 export default function Page({ params }: { params: { id: number } }) {
-  // listing id
+  const [listing, setListing] = React.useState<any>({});
   const { id } = params;
-  console.log(id);
-  return <ListingPreview {...mockListing} />;
+
+  React.useEffect(() => {
+    const getListing = async () => {
+      const { data } = await axios.get(
+        `${process.env.BACKEND_URL}/listings/${id}`
+      );
+      setListing(data);
+    };
+    getListing();
+  }, [id]);
+  // spinner whilst we wait for listing to be defined
+  // ghost object
+  return Object.keys(listing).length === 0 ? (
+    <div>Waiting for listing</div>
+  ) : (
+    <ListingPreview {...listing} />
+  );
 }
