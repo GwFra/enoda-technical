@@ -10,30 +10,24 @@ const listings = [
     title: "This is the first listing",
     quantity: 50,
     price: 1000,
-    timing: {
-      startDate: Date.now() + 20000,
-      endDate: Date.now() + 30000,
-    },
+    start: Date.now() + 20000,
+    end: Date.now() + 30000,
   },
   {
     id: 2,
     title: "This is the second listing",
     quantity: 50,
     price: 1000,
-    timing: {
-      startDate: Date.now() + 20000,
-      endDate: Date.now() + 30000,
-    },
+    start: Date.now() + 20000,
+    end: Date.now() + 30000,
   },
   {
     id: 3,
     title: "This is the third listing",
     quantity: 50,
     price: 1000,
-    timing: {
-      startDate: Date.now() + 20000,
-      endDate: Date.now() + 30000,
-    },
+    start: Date.now() + 20000,
+    end: Date.now() + 30000,
   },
 ];
 

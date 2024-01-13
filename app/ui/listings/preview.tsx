@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   Box,
   Button,
@@ -11,30 +12,31 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import axios from "axios";
+import "dotenv/config";
 
 type Props = {
   id: string | number;
   title: string;
   quantity: number;
   price: number;
-  timing: {
-    startDate: number;
-    endDate: number;
-  };
+  start: number;
+  end: number;
 };
 
 function determineTiming(
   hasStarted: boolean,
   hasEnded: boolean,
-  startDate: number,
-  endDate: number
+  start: number,
+  end: number
 ) {
   if (!hasStarted) {
     // countdown to start - return start date and time Starting: ...
-    return `Starting at: ${new Date(startDate).toLocaleString().split(",")[1]}`;
+    return `Starting at: ${new Date(start).toLocaleString().split(",")[1]}`;
   } else if (!hasEnded) {
     // countdown to end Ending: ...
-    return `Ending at: ${new Date(endDate).toLocaleString().split(",")[1]}`;
+    return `Ending at: ${new Date(end).toLocaleString().split(",")[1]}`;
   } else {
     // countdown on how long it should be till it should no longer be shown
     return `Has ended`;
@@ -42,20 +44,28 @@ function determineTiming(
 }
 
 export default function ListingPreview(props: Props) {
-  const { id, title, quantity, price, timing } = props;
-  const { startDate, endDate } = timing;
+  const pathname = usePathname();
+  const preview = pathname.includes("/listings/");
+  // spinner waiting for bid to be placed
+
+  const { id, title, quantity, price, start, end } = props;
   const currentDate = Date.now();
-  const hasEnded = endDate < currentDate; // listing has closed
-  const hasStarted = startDate > currentDate; // listing has started
-  const timingString = determineTiming(
-    hasStarted,
-    hasEnded,
-    startDate,
-    endDate
-  );
+  const hasEnded = end < currentDate; // listing has closed
+  const hasStarted = start > currentDate; // listing has started
+  const timingString = determineTiming(hasStarted, hasEnded, start, end);
+
+  const handleClick = async () => {
+    // add this to config
+    // get token and add it to react state - probably not wise but easy peasy
+    try {
+      await axios.put(`${process.env.BACKEND_URL}/bids`, { listingId: id });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
-    <Paper elevation={24} style={{ maxWidth: "50vw", maxHeight: "15vh" }}>
+    <Paper elevation={24} style={{ width: "100%" }}>
       <Card variant="outlined" style={{ width: "100%", height: "fit-content" }}>
         <Box style={{ display: "flex", width: "100%", padding: 15 }}>
           <div>This is where the image will go of some kind</div>
@@ -74,11 +84,17 @@ export default function ListingPreview(props: Props) {
             <CardActions
               style={{ marginLeft: "auto", marginTop: "auto", minWidth: "" }}
             >
-              <Link href={`/listings/${id}`}>
-                <Button variant="contained" size="small">
-                  View listing
+              {!preview ? (
+                <Link href={`/listings/${id}`}>
+                  <Button variant="contained" size="small">
+                    {"View listing"}
+                  </Button>
+                </Link>
+              ) : (
+                <Button variant="contained" size="small" onClick={handleClick}>
+                  {"Place bid"}
                 </Button>
-              </Link>
+              )}
             </CardActions>
           </Box>
         </Box>
