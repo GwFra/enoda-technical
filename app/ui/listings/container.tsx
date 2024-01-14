@@ -1,19 +1,32 @@
 "use client";
 
 import { Box, List, ListItem } from "@mui/material";
-import ListingPreview from "./preview";
+import InfoPreview from "./preview";
 
-export default function ListingContainer(props: any) {
-  const { listings } = props;
+type Props = {
+  toDisplay: any;
+  defaultListing?: boolean;
+  userListing?: boolean;
+  isBid?: boolean;
+  isOffer?: boolean;
+};
+
+export default function DisplayContainer(props: Props) {
+  const { toDisplay, ...options } = props;
   // maximum of three - figure out pagination when there's more than three, use state for pagination and listing
-  const listingsDisplay = listings.map((listing: any, index: number) => (
-    <ListItem key={index} style={{ margin: "40px 0px" }}>
-      <ListingPreview {...listing} />
+  const listingsDisplay = toDisplay.map((display: any, index: number) => (
+    <ListItem
+      key={index}
+      style={{
+        margin: "20px 0px",
+      }}
+    >
+      <InfoPreview {...display} {...options} />
     </ListItem>
   ));
   return (
-    <Box style={{ display: "flex", alignItems: "center" }}>
-      <List>{listingsDisplay}</List>
+    <Box style={{ display: "flex", justifyContent: "center" }}>
+      <List style={{ width: "80%" }}>{listingsDisplay}</List>
     </Box>
   );
 }
