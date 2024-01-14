@@ -2,7 +2,8 @@
 
 import { Button, Typography } from "@mui/material";
 
-export default function SubmitBid(props: any) {
+export default function Submit(props: any) {
+  const { handleClose, handleConfirm, message } = props;
   return (
     <div
       style={{
@@ -11,12 +12,12 @@ export default function SubmitBid(props: any) {
         alignItems: "center",
       }}
     >
-      <Typography>Are you sure you want to submit this bid?</Typography>
+      <Typography>{message}</Typography>
       <div style={{ display: "flex", gap: 30, paddingTop: "10px" }}>
-        <Button variant="contained" onClick={props.handleConfirm}>
+        <Button variant="contained" onClick={handleConfirm}>
           Confirm
         </Button>
-        <Button variant="contained" color="error" onClick={props.handleClose}>
+        <Button variant="contained" color="error" onClick={handleClose}>
           Cancel
         </Button>
       </div>
