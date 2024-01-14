@@ -3,7 +3,7 @@
 import { Box, List, ListItem } from "@mui/material";
 import axios from "axios";
 import React from "react";
-import ListingPreview from "../ui/listings/preview";
+import ListingPreview from "@/app/ui/listings/preview";
 
 export default function BidsPage() {
   const [bids, setBids] = React.useState<any>([]);

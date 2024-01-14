@@ -16,8 +16,8 @@ export default function Navigation() {
   return (
     <div>
       <Breadcrumbs>
-        <Link href="/">Home</Link>
-        <Link href="/listings">Listing</Link>
+        <Link href="/home">Home</Link>
+        {/* <Link href="/home/listings">Listing</Link> */}
       </Breadcrumbs>
     </div>
   );

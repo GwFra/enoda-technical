@@ -110,13 +110,13 @@ export default function ListingPreview(props: Props) {
                 ) : isBid ? (
                   <div>Waiting to be accepted</div>
                 ) : isUserListings ? (
-                  <Link href={`/bids/${id}`}>
+                  <Link href={`/home/bids/${id}`}>
                     <Button variant="contained" size="small">
                       {"View bids"}
                     </Button>
                   </Link>
                 ) : (
-                  <Link href={`/listings/${id}`}>
+                  <Link href={`/home/listings/${id}`}>
                     <Button variant="contained" size="small">
                       {"View listing"}
                     </Button>

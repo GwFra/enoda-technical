@@ -3,9 +3,10 @@
 import { Box } from "@mui/material";
 import axios from "axios";
 import React from "react";
-import ListingContainer from "../ui/listings/container";
+import ListingContainer from "@/app/ui/listings/container";
 
-export default function ListingsPage() {
+export default function Home() {
+  // includes side bar
   const [listings, setListings] = React.useState<any>([]);
   React.useEffect(() => {
     const getListings = async () => {
