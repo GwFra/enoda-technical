@@ -1,24 +1,23 @@
 "use client";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { useFormState, useFormStatus } from "react-dom";
+
 import {
-  authenticateEmailPaswsord,
-  authenticateWithGoogle,
-} from "@/app/lib/actions";
+  Avatar,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
+import { authenticateWithGoogle } from "@/app/lib/actions";
 import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import "dotenv/config";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import bcrypt from "bcryptjs";
+import { request } from "@/app/lib/request";
 
 export default function SignIn() {
   const cookie = new Cookies();
@@ -26,22 +25,29 @@ export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+
     const loginInfo = {
       email: form.get("email"),
-      password: form.get("password"),
     };
-    const { data } = await axios.post(
-      `${process.env.BACKEND_URL}/auth/login`,
-      loginInfo
+    const hashedPassword = await request("post", "auth/login", loginInfo);
+    const correctPassword = bcrypt.compareSync(
+      form.get("password") as string,
+      hashedPassword.data
     );
-    cookie.set("access_token", data.access_token, { secure: true });
-    // redirect("../home");
-    router.push("/home");
+    if (correctPassword) {
+      const { data } = await request("post", "auth/login/token", {
+        ...loginInfo,
+        password: hashedPassword.data,
+      });
+      cookie.set("access_token", data.access_token, { secure: true });
+      router.push("/home");
+    } else {
+      // throw some kind of unauthorized error
+    }
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
