@@ -22,9 +22,12 @@ type Props = {
   id: string | number;
   title: string;
   quantity: number;
+  supplierId: number;
   cost: number;
   start: number;
   end: number;
+  isBid?: boolean;
+  isOffer?: boolean;
 };
 
 function determineTiming(
@@ -50,12 +53,12 @@ export default function ListingPreview(props: Props) {
   const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
-  const isBid = pathname.includes("/bids");
-  const isUserListings = pathname.includes("/listings/user");
   // spinner waiting for bid to be placed / input
   // check if bid has already been placed
 
-  const { id, title, quantity, cost, start, end } = props;
+  const { id, title, quantity, cost, start, end, supplierId, isBid, isOffer } =
+    props;
+  const userId = 1000;
   const currentDate = Date.now();
   const hasEnded = end < currentDate; // listing has closed
   const hasStarted = start > currentDate; // listing has started
@@ -69,7 +72,7 @@ export default function ListingPreview(props: Props) {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <BidConfirmation
         isOpen={bidModal}
         handleClose={handleClose}
@@ -99,7 +102,19 @@ export default function ListingPreview(props: Props) {
                 )}
               </CardContent>
               <CardActions style={{ marginLeft: "auto", marginTop: "auto" }}>
-                {isPreview ? (
+                {isBid ? (
+                  <Typography>Waiting for response</Typography>
+                ) : isOffer ? (
+                  <Button variant="contained" size="small">
+                    {"Accept offer"}
+                  </Button>
+                ) : supplierId === userId ? (
+                  <Link href={`/home/listings/offers/${id}`}>
+                    <Button variant="contained" size="small">
+                      {"View offers"}
+                    </Button>
+                  </Link>
+                ) : (
                   <Button
                     variant="contained"
                     size="small"
@@ -107,20 +122,6 @@ export default function ListingPreview(props: Props) {
                   >
                     {"Place bid"}
                   </Button>
-                ) : isBid ? (
-                  <div>Waiting to be accepted</div>
-                ) : isUserListings ? (
-                  <Link href={`/home/bids/${id}`}>
-                    <Button variant="contained" size="small">
-                      {"View bids"}
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link href={`/home/listings/${id}`}>
-                    <Button variant="contained" size="small">
-                      {"View listing"}
-                    </Button>
-                  </Link>
                 )}
               </CardActions>
             </Box>

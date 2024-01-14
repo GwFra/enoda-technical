@@ -3,15 +3,15 @@
 import axios from "axios";
 import React from "react";
 
-export default function Bids({ params }: any) {
-  const [listingBids, setListingBids] = React.useState<any>([]);
+export default function ListingOffer({ params }: any) {
+  const [listingOffers, setListingOffers] = React.useState<any>([]);
 
   React.useEffect(() => {
     const getListingsBids = async () => {
       const { data } = await axios.get(
-        `${process.env.BACKEND_URL}/bids/${params.id}`
+        `${process.env.BACKEND_URL}/listings/offers/${params.id}`
       );
-      setListingBids(data);
+      setListingOffers(data);
     };
     getListingsBids();
   }, [params.id]);
@@ -19,5 +19,5 @@ export default function Bids({ params }: any) {
   // lisintg id - breif info
   // bidder email
   //
-  return <div>{JSON.stringify(listingBids)}</div>;
+  return <div>{JSON.stringify(listingOffers)}</div>;
 }

@@ -23,7 +23,7 @@ export default function BidsPage() {
 
   const bidsDisplay = bids.map((bids: any, index: number) => (
     <ListItem key={index} style={{ margin: "20px 0px" }}>
-      <ListingPreview {...bids} />
+      <ListingPreview {...bids} isBid={true} />
     </ListItem>
   ));
 

@@ -3,7 +3,14 @@
 import { Box, List, ListItem } from "@mui/material";
 import ListingPreview from "./preview";
 
-export default function ListingContainer(props: any) {
+type Props = {
+  listings: any;
+  defaultListing?: boolean;
+  userListing?: boolean;
+  userBid?: boolean;
+};
+
+export default function ListingContainer(props: Props) {
   const { listings } = props;
   // maximum of three - figure out pagination when there's more than three, use state for pagination and listing
   const listingsDisplay = listings.map((listing: any, index: number) => (
