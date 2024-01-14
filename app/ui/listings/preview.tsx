@@ -95,11 +95,7 @@ export default function InfoPreview(props: Props) {
 
   return (
     <>
-      <Confirmation
-        {...confirmModal}
-        handleClose={handleClose}
-        listingId={id}
-      />
+      <Confirmation {...confirmModal} handleClose={handleClose} />
       <Paper elevation={24} style={{ width: "100%" }}>
         <Card
           variant="outlined"
@@ -152,7 +148,7 @@ export default function InfoPreview(props: Props) {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={() => openModal("bid")}
+                    onClick={() => openModal("bid", id)}
                   >
                     {"Place bid"}
                   </Button>

@@ -1,12 +1,12 @@
 "use client";
 
 import Submit from "@/app/ui/confirmation/submit";
-import axios from "axios";
+import { request } from "@/app/lib/request";
 
 export default function OfferConfirmation(props: any) {
   const handleClick = async () => {
-    // get token and add it to react state - probably not wise but easy peasy
-    await axios.post(`${process.env.BACKEND_URL}/bids/${props.id}`);
+    await request("post", `bids/${props.id}`);
+    // error handling perhaps
     props.handleClose();
   };
   return (

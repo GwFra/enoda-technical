@@ -6,7 +6,7 @@ import OfferConfirmation from "@/app/ui/offer/offerConfirmation";
 import BidConfirmation from "@/app/ui/bid/bidConfirmation";
 
 export default function Confirmation(props: any) {
-  const { handleClose, isOpen, type, typeId, refresh } = props;
+  const { handleClose, isOpen, type, typeId } = props;
 
   // should check for type === submit
   const SubmitOption = type === "offer" ? OfferConfirmation : BidConfirmation;
@@ -33,11 +33,7 @@ export default function Confirmation(props: any) {
             height: "100%",
           }}
         >
-          <SubmitOption
-            handleClose={handleClose}
-            id={typeId}
-            refresh={props.refresh}
-          />
+          <SubmitOption handleClose={handleClose} id={typeId} />
         </Box>
       </Paper>
     </Modal>

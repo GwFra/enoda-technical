@@ -1,12 +1,12 @@
 "use client";
 
-import axios from "axios";
 import Submit from "@/app/ui/confirmation/submit";
+import { request } from "@/app/lib/request";
 
 export default function BidConfirmation(props: any) {
   const handleClick = async () => {
-    await axios.put(`${process.env.BACKEND_URL}/bids`, {
-      listingId: props.listingId,
+    await request("put", "bids", {
+      listingId: props.id,
     });
     props.handleClose();
   };

@@ -15,21 +15,29 @@ import {
   authenticateWithGoogle,
 } from "@/app/lib/actions";
 import { GoogleLogin } from "@react-oauth/google";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import "dotenv/config";
+import { redirect, useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const [issue, handleSubmit] = useFormState(
-    authenticateEmailPaswsord,
-    undefined
-  );
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+  const cookie = new Cookies();
+  const router = useRouter();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const loginInfo = {
+      email: form.get("email"),
+      password: form.get("password"),
+    };
+    const { data } = await axios.post(
+      `${process.env.BACKEND_URL}/auth/login`,
+      loginInfo
+    );
+    cookie.set("access_token", data.access_token, { secure: true });
+    // redirect("../home");
+    router.push("/home");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,9 +54,9 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
@@ -77,7 +85,9 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <GoogleLogin onSuccess={authenticateWithGoogle as any} />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <GoogleLogin onSuccess={authenticateWithGoogle as any} />
+          </div>
         </Box>
       </Box>
     </Container>
