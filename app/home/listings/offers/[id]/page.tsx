@@ -18,5 +18,5 @@ export default function ListingOffer({ params }: any) {
   }, [params.id]);
 
   // bidder email?
-  return <DisplayContainer toDisplay={listingOffers} isOffer={true} />;
+  return <DisplayContainer toDisplay={listingOffers} isOffer />;
 }

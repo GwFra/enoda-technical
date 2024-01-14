@@ -31,5 +31,5 @@ export default function BidsPage() {
     getBids();
   }, []);
 
-  return <DisplayContainer toDisplay={bids} isBid={true} />;
+  return <DisplayContainer toDisplay={bids} isBid />;
 }

@@ -15,5 +15,5 @@ export default function Offers() {
     };
     getOffers();
   }, []);
-  return <DisplayContainer toDisplay={offers} isOffer={true} />;
+  return <DisplayContainer toDisplay={offers} isOffer />;
 }
