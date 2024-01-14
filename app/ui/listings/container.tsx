@@ -13,7 +13,6 @@ type Props = {
 
 export default function DisplayContainer(props: Props) {
   const { toDisplay, ...options } = props;
-  // maximum of three - figure out pagination when there's more than three, use state for pagination and listing
   const listingsDisplay = toDisplay.map((display: any, index: number) => (
     <ListItem
       key={index}
@@ -25,7 +24,14 @@ export default function DisplayContainer(props: Props) {
     </ListItem>
   ));
   return (
-    <Box style={{ display: "flex", justifyContent: "center" }}>
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        borderRight: "2px solid black",
+        height: "100%",
+      }}
+    >
       <List style={{ width: "80%" }}>{listingsDisplay}</List>
     </Box>
   );
