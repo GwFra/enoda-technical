@@ -12,13 +12,17 @@ export default function Navigation() {
     const prevLink = path.split(page)[0];
     return (
       <Link key={index} href={`${prevLink === "/" ? "" : prevLink}/${page}`}>
-        {page[0]?.toUpperCase() + page.slice(1)}
+        {page === "/" ? "" : page[0]?.toUpperCase() + page.slice(1)}
       </Link>
     );
   });
   return (
     <div>
-      <Breadcrumbs>{linkCrumbs}</Breadcrumbs>
+      {path.includes("/login") ? (
+        <></>
+      ) : (
+        <Breadcrumbs>{linkCrumbs}</Breadcrumbs>
+      )}
     </div>
   );
 }
