@@ -3,6 +3,7 @@
 import React from "react";
 import { Box, Grid, List, ListItem, Pagination } from "@mui/material";
 import InfoPreview from "./preview";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   toDisplay: any;
@@ -10,6 +11,14 @@ type Props = {
   isBid?: boolean;
   isOffer?: boolean;
 };
+
+const SizedListItem = styled(ListItem)({
+  margin: "20px 0px",
+});
+const NavContainer = styled(Box)({
+  orderRight: "2px solid black",
+  height: "100%",
+});
 
 export default function DisplayContainer(props: Props) {
   const { toDisplay, ...options } = props;
@@ -35,18 +44,13 @@ export default function DisplayContainer(props: Props) {
 
   const listingsDisplay = displaySplit[page]?.map(
     (display: any, index: number) => (
-      <ListItem
-        key={index}
-        style={{
-          margin: "20px 0px",
-        }}
-      >
+      <SizedListItem key={index}>
         <InfoPreview {...display} {...options} />
-      </ListItem>
+      </SizedListItem>
     )
   );
   return (
-    <Box
+    <NavContainer
       style={{
         borderRight: "2px solid black",
         height: "100%",
@@ -66,6 +70,6 @@ export default function DisplayContainer(props: Props) {
           />
         </Grid>
       </Grid>
-    </Box>
+    </NavContainer>
   );
 }
