@@ -17,6 +17,7 @@ import BidConfirmation from "@/app/ui/bid/bidConfirmation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "dotenv/config";
+import Confirmation from "../confirmation/confirmation";
 
 type Props = {
   id: string | number;
@@ -28,6 +29,9 @@ type Props = {
   end: number;
   isBid?: boolean;
   isOffer?: boolean;
+  bidId?: number;
+  accepted?: boolean;
+  refresh?: any;
 };
 
 function determineTiming(
@@ -49,32 +53,52 @@ function determineTiming(
 }
 
 export default function ListingPreview(props: Props) {
-  const [bidModal, setbidModal] = React.useState<boolean>(false);
+  const [confirmModal, setConfirmModal] = React.useState({
+    isOpen: false,
+    type: "",
+    typeId: undefined,
+  });
+
   const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
   // spinner waiting for bid to be placed / input
   // check if bid has already been placed
 
-  const { id, title, quantity, cost, start, end, supplierId, isBid, isOffer } =
-    props;
+  const {
+    id,
+    title,
+    quantity,
+    cost,
+    start,
+    end,
+    supplierId,
+    isBid,
+    isOffer,
+    bidId,
+    accepted,
+  } = props;
   const userId = 1000;
   const currentDate = Date.now();
   const hasEnded = end < currentDate; // listing has closed
   const hasStarted = start > currentDate; // listing has started
   const timingString = determineTiming(hasStarted, hasEnded, start, end);
 
-  const handleInitialBidPlacement = () => {
-    setbidModal(true);
+  const openModal = (type: string, typeId?: any) => {
+    setConfirmModal({
+      isOpen: true,
+      type,
+      typeId,
+    });
   };
   const handleClose = () => {
-    setbidModal(false);
+    setConfirmModal({ ...confirmModal, isOpen: false });
   };
 
   return (
     <div style={{ width: "100%" }}>
-      <BidConfirmation
-        isOpen={bidModal}
+      <Confirmation
+        {...confirmModal}
         handleClose={handleClose}
         listingId={id}
       />
@@ -103,11 +127,23 @@ export default function ListingPreview(props: Props) {
               </CardContent>
               <CardActions style={{ marginLeft: "auto", marginTop: "auto" }}>
                 {isBid ? (
-                  <Typography>Waiting for response</Typography>
+                  accepted ? (
+                    <Typography>Accepted!</Typography>
+                  ) : (
+                    <Typography>Waiting for response</Typography>
+                  )
                 ) : isOffer ? (
-                  <Button variant="contained" size="small">
-                    {"Accept offer"}
-                  </Button>
+                  accepted ? (
+                    <Typography>You have Accepted</Typography>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => openModal("offer", bidId)}
+                    >
+                      {"Accept offer"}
+                    </Button>
+                  )
                 ) : supplierId === userId ? (
                   <Link href={`/home/listings/offers/${id}`}>
                     <Button variant="contained" size="small">
@@ -118,7 +154,7 @@ export default function ListingPreview(props: Props) {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={handleInitialBidPlacement}
+                    onClick={() => openModal("bid")}
                   >
                     {"Place bid"}
                   </Button>

@@ -14,8 +14,19 @@ export default function BidsPage() {
         const { listingId } = bid;
         return axios.get(`${process.env.BACKEND_URL}/listings/${listingId}`);
       });
+
       const listingsRequests = await Promise.all(getListingsWithBids);
-      const listings = listingsRequests.map(({ data }) => data);
+      const listings = listingsRequests.map((listing) => {
+        const { id, accepted } = data.find(
+          (bid: any) => bid.listingId === bid.id
+        );
+        const info = {
+          ...listing.data,
+          bidId: id,
+          accepted,
+        };
+        return info;
+      });
       setBids(listings);
     };
     getBids();

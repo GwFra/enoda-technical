@@ -1,5 +1,7 @@
 "use client";
 
+import ListingPreview from "@/app/ui/listings/preview";
+import { Box, List, ListItem } from "@mui/material";
 import axios from "axios";
 import React from "react";
 
@@ -19,5 +21,16 @@ export default function ListingOffer({ params }: any) {
   // lisintg id - breif info
   // bidder email
   //
-  return <div>{JSON.stringify(listingOffers)}</div>;
+  const listingOffersDisplay = listingOffers.map(
+    (offer: any, index: number) => (
+      <ListItem key={index} style={{ margin: "20px 0px" }}>
+        <ListingPreview {...offer} isOffer={true} />
+      </ListItem>
+    )
+  );
+  return (
+    <Box style={{ display: "flex", justifyContent: "center" }}>
+      <List>{listingOffersDisplay}</List>
+    </Box>
+  );
 }
