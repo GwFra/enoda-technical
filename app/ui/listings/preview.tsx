@@ -14,12 +14,14 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Confirmation from "@/app/ui/confirmation/confirmation";
+import Cookie from "universal-cookie";
+import { jwtDecode } from "jwt-decode";
 
 type Props = {
   id: string | number;
   title: string;
   quantity: number;
-  supplierId: number;
+  supplierId: number | string;
   cost: number;
   start: number;
   end: number;
@@ -49,6 +51,10 @@ function determineTiming(
 }
 
 export default function InfoPreview(props: Props) {
+  const cookie = new Cookie();
+  const token = cookie.get("access_token");
+  const user = jwtDecode(token);
+  const userId = user.sub;
   const [confirmModal, setConfirmModal] = React.useState({
     isOpen: false,
     type: "",
@@ -58,8 +64,6 @@ export default function InfoPreview(props: Props) {
   const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
-  // spinner waiting for bid to be placed / input
-  // check if bid has already been placed
 
   const {
     id,
@@ -75,7 +79,6 @@ export default function InfoPreview(props: Props) {
     accepted,
   } = props;
 
-  const userId = 1000;
   const currentDate = Date.now();
   const hasEnded = end < currentDate; // listing has closed
   const hasStarted = start > currentDate; // listing has started
