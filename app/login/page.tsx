@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LoginIcon from "@mui/icons-material/Login";
 import { GoogleLogin } from "@react-oauth/google";
 import bcrypt from "bcryptjs";
 import Cookies from "universal-cookie";
@@ -57,7 +57,7 @@ export default function SignIn() {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
+          <LoginIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Login
