@@ -14,7 +14,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Confirmation from "@/app/ui/confirmation/confirmation";
-import "dotenv/config";
 
 type Props = {
   id: string | number;
@@ -120,7 +119,9 @@ export default function InfoPreview(props: Props) {
                 )}
               </CardContent>
               <CardActions style={{ marginLeft: "auto", marginTop: "auto" }}>
-                {isBid ? (
+                {timingString === "Has ended" ? (
+                  <Typography>Bid ended</Typography>
+                ) : isBid ? (
                   accepted ? (
                     <Typography>Accepted!</Typography>
                   ) : (

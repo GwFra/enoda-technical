@@ -1,10 +1,7 @@
 "use client";
 
-import React from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import Link from "next/link";
+import { Button, Grid, Typography } from "@mui/material";
 
 export default function Home() {
   return (

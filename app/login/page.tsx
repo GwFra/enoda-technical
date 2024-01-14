@@ -9,19 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-
-import { authenticateWithGoogle } from "@/app/lib/actions";
 import { GoogleLogin } from "@react-oauth/google";
-import Cookies from "universal-cookie";
-import axios from "axios";
-import "dotenv/config";
-import { useRouter } from "next/navigation";
 import bcrypt from "bcryptjs";
+import Cookies from "universal-cookie";
+import { useRouter } from "next/navigation";
 import { request } from "@/app/lib/request";
+import { useSiteContext } from "../context";
 
 export default function SignIn() {
   const cookie = new Cookies();
   const router = useRouter();
+  const state = useSiteContext();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -40,6 +39,7 @@ export default function SignIn() {
         password: hashedPassword.data,
       });
       cookie.set("access_token", data.access_token, { secure: true });
+      state.setLoggedIn(true);
       router.push("/home");
     } else {
       // throw some kind of unauthorized error
@@ -92,7 +92,11 @@ export default function SignIn() {
             Sign In
           </Button>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <GoogleLogin onSuccess={authenticateWithGoogle as any} />
+            <GoogleLogin
+              onSuccess={() => {
+                console.log("you tried");
+              }}
+            />
           </div>
         </Box>
       </Box>
