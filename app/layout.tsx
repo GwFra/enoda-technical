@@ -5,7 +5,7 @@ import "./globals.css";
 import styles from "./page.module.css";
 import { Grid } from "@mui/material";
 import Header from "@/app/ui/header";
-import Navigation from "./ui/navigation";
+import Navigation from "@/app/ui/navigation";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ContextProvider from "./context";
 import "dotenv/config";
@@ -28,7 +28,7 @@ export default function RootLayout({
         <ContextProvider>
           <body className={inter.className}>
             <main className={styles.main}>
-              <div style={{ height: "100%", width: "100%" }}>
+              <div className={styles.basicContainer}>
                 <Grid
                   container
                   direction="column"
