@@ -5,20 +5,20 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function Navigation() {
-  // const path = usePathname();
-  // console.log(path);
-  // const links = path.split("/");
-  // console.log(links);
-  // const hrefLinks = links.map((step, index, arr) => `/${links[0]}`)
-  // const crumbs = links.map((step, index) => {
-  //   <Link href={``}></Link>
-  // });
+  const path = usePathname();
+  const links = path.split("/");
+  links.shift(); // remove initial " " found at the start of the path
+  const linkCrumbs = links.map((page, index) => {
+    const prevLink = path.split(page)[0];
+    return (
+      <Link key={index} href={`${prevLink === "/" ? "" : prevLink}/${page}`}>
+        {page[0].toUpperCase() + page.slice(1)}
+      </Link>
+    );
+  });
   return (
     <div>
-      <Breadcrumbs>
-        <Link href="/home">Home</Link>
-        {/* <Link href="/home/listings">Listing</Link> */}
-      </Breadcrumbs>
+      <Breadcrumbs>{linkCrumbs}</Breadcrumbs>
     </div>
   );
 }
