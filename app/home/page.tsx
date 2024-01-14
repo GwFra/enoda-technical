@@ -1,9 +1,8 @@
 "use client";
 
-import { Box } from "@mui/material";
 import axios from "axios";
 import React from "react";
-import ListingContainer from "@/app/ui/listings/container";
+import DisplayContainer from "@/app/ui/listings/container";
 
 export default function Home() {
   // includes side bar
@@ -15,9 +14,5 @@ export default function Home() {
     };
     getListings();
   }, []);
-  return (
-    <Box style={{ display: "flex", justifyContent: "center" }}>
-      <ListingContainer listings={listings} />
-    </Box>
-  );
+  return <DisplayContainer toDisplay={listings} />;
 }

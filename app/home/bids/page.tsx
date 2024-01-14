@@ -1,9 +1,8 @@
 "use client";
 
-import { Box, List, ListItem } from "@mui/material";
 import axios from "axios";
 import React from "react";
-import ListingPreview from "@/app/ui/listings/preview";
+import DisplayContainer from "@/app/ui/listings/container";
 
 export default function BidsPage() {
   const [bids, setBids] = React.useState<any>([]);
@@ -32,15 +31,5 @@ export default function BidsPage() {
     getBids();
   }, []);
 
-  const bidsDisplay = bids.map((bids: any, index: number) => (
-    <ListItem key={index} style={{ margin: "20px 0px" }}>
-      <ListingPreview {...bids} isBid={true} />
-    </ListItem>
-  ));
-
-  return (
-    <Box style={{ display: "flex", justifyContent: "center" }}>
-      <List>{bidsDisplay}</List>
-    </Box>
-  );
+  return <DisplayContainer toDisplay={bids} isBid={true} />;
 }

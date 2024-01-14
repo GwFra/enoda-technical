@@ -1,6 +1,6 @@
 "use client";
 
-import ListingContainer from "@/app/ui/listings/container";
+import DisplayContainer from "@/app/ui/listings/container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -31,7 +31,7 @@ export default function Home() {
       </Grid>
       <Grid item xs={9}>
         <Typography>Main content</Typography>
-        <ListingContainer listings={listings} />
+        <DisplayContainer toDisplay={listings} />
       </Grid>
     </Grid>
   );

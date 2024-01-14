@@ -7,17 +7,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  FormControl,
-  Modal,
   Paper,
   // CardMedia,
   Typography,
 } from "@mui/material";
-import BidConfirmation from "@/app/ui/bid/bidConfirmation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Confirmation from "@/app/ui/confirmation/confirmation";
 import "dotenv/config";
-import Confirmation from "../confirmation/confirmation";
 
 type Props = {
   id: string | number;
@@ -52,7 +49,7 @@ function determineTiming(
   }
 }
 
-export default function ListingPreview(props: Props) {
+export default function InfoPreview(props: Props) {
   const [confirmModal, setConfirmModal] = React.useState({
     isOpen: false,
     type: "",
@@ -78,6 +75,7 @@ export default function ListingPreview(props: Props) {
     bidId,
     accepted,
   } = props;
+
   const userId = 1000;
   const currentDate = Date.now();
   const hasEnded = end < currentDate; // listing has closed
@@ -96,7 +94,7 @@ export default function ListingPreview(props: Props) {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <>
       <Confirmation
         {...confirmModal}
         handleClose={handleClose}
@@ -164,6 +162,6 @@ export default function ListingPreview(props: Props) {
           </Box>
         </Card>
       </Paper>
-    </div>
+    </>
   );
 }

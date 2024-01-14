@@ -1,7 +1,6 @@
 "use client";
 
-import ListingPreview from "@/app/ui/listings/preview";
-import { Box, List, ListItem } from "@mui/material";
+import DisplayContainer from "@/app/ui/listings/container";
 import axios from "axios";
 import React from "react";
 
@@ -16,15 +15,5 @@ export default function Offers() {
     };
     getOffers();
   }, []);
-
-  const offersDisplay = offers.map((offer: any, index: number) => (
-    <ListItem key={index} style={{ margin: "20px 0px" }}>
-      <ListingPreview {...offer} isOffer={true} />
-    </ListItem>
-  ));
-  return (
-    <Box style={{ display: "flex", justifyContent: "center" }}>
-      <List>{offersDisplay}</List>
-    </Box>
-  );
+  return <DisplayContainer toDisplay={offers} isOffer={true} />;
 }
