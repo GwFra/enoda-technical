@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Confirmation from "@/app/ui/confirmation/confirmation";
 import Cookie from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -51,17 +51,18 @@ function determineTiming(
 }
 
 export default function InfoPreview(props: Props) {
+  const pathname = usePathname();
   const cookie = new Cookie();
-  const token = cookie.get("access_token");
-  const user = jwtDecode(token);
-  const userId = user.sub;
   const [confirmModal, setConfirmModal] = React.useState({
     isOpen: false,
     type: "",
     typeId: undefined,
   });
+  const token = cookie.get("access_token");
+  if (!token) return redirect("/login");
+  const user = jwtDecode(token);
+  const userId = user.sub;
 
-  const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
 

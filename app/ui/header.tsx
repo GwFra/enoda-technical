@@ -2,26 +2,27 @@
 
 import React from "react";
 import { Button, Typography } from "@mui/material";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
 import { useSiteContext } from "../context";
 import Link from "next/link";
 
 export default function Header() {
+  const router = useRouter();
   const cookie = new Cookies();
   const state = useSiteContext();
+  const [message, setMessage] = React.useState<string>("Sign in");
 
   React.useEffect(() => {
-    // re-render when isLoggedIn has updated
+    setMessage(state.isLoggedIn ? "Sign out" : "Sign in");
   }, [state.isLoggedIn]);
 
-  const buttonDisplay = state.isLoggedIn ? "Sign out" : "Sign in";
   const handleClick = () => {
     const handleSignout = () => {
       cookie.remove("access_token");
       state.setLoggedIn(false);
     };
-    state.isLoggedIn ? handleSignout() : redirect("/login");
+    state.isLoggedIn ? handleSignout() : router.push("/login");
   };
   return (
     <div
@@ -36,7 +37,7 @@ export default function Header() {
       <Typography variant="h5">Enoda Technical</Typography>
       <Link href={state.isLoggedIn ? "/" : "/login"}>
         <Button onClick={handleClick} variant="contained">
-          {buttonDisplay}
+          {message}
         </Button>
       </Link>
     </div>

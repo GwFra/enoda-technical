@@ -21,7 +21,8 @@ export default function Navigation() {
   return (
     <div
       style={{
-        backgroundColor: "aliceblue",
+        backgroundColor: "#00000014",
+        borderRadius: "12px",
         display: "flex",
         paddingTop: 0,
         paddingLeft: 16,

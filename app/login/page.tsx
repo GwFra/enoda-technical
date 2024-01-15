@@ -9,17 +9,30 @@ import {
   Typography,
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import { GoogleLogin } from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import bcrypt from "bcryptjs";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 import { request } from "@/app/lib/request";
 import { useSiteContext } from "../context";
+import { jwtDecode } from "jwt-decode";
 
 export default function SignIn() {
   const cookie = new Cookies();
   const router = useRouter();
   const state = useSiteContext();
+
+  const handleGoogleLogin = async (googleObject: CredentialResponse) => {
+    const { email } = jwtDecode(googleObject.credential as string) as any;
+    const { data } = await request("post", "auth/login", {
+      email,
+      isGoogle: true,
+    });
+
+    cookie.set("access_token", data.access_token, { secure: true });
+    state.setLoggedIn(true);
+    router.push("/home");
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,11 +105,7 @@ export default function SignIn() {
             Sign In
           </Button>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <GoogleLogin
-              onSuccess={() => {
-                console.log("you tried");
-              }}
-            />
+            <GoogleLogin onSuccess={handleGoogleLogin} />
           </div>
         </Box>
       </Box>
