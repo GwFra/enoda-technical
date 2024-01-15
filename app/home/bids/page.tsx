@@ -16,7 +16,7 @@ export default function BidsPage() {
 
       const listingsRequests = await Promise.all(getListingsWithBids);
       const listings = listingsRequests.map((listing) => {
-        const { id, accepted } = data.find(
+        const { id, accepted } = data.filter(
           (bid: any) => bid.listingId === bid.id
         );
         const info = {
