@@ -22,6 +22,12 @@ export default function SignIn() {
   const router = useRouter();
   const state = useSiteContext();
 
+  const handleLogin = async (data: { access_token: string }) => {
+    cookie.set("access_token", data.access_token, { secure: true });
+    state.setLoggedIn(true);
+    router.push("/home");
+  };
+
   const handleGoogleLogin = async (googleObject: CredentialResponse) => {
     const { email } = jwtDecode(googleObject.credential as string) as any;
     const { data } = await request("post", "auth/login", {
@@ -29,9 +35,7 @@ export default function SignIn() {
       isGoogle: true,
     });
 
-    cookie.set("access_token", data.access_token, { secure: true });
-    state.setLoggedIn(true);
-    router.push("/home");
+    handleLogin(data);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,9 +55,7 @@ export default function SignIn() {
         ...loginInfo,
         password: hashedPassword.data,
       });
-      cookie.set("access_token", data.access_token, { secure: true });
-      state.setLoggedIn(true);
-      router.push("/home");
+      handleLogin(data);
     } else {
       // throw some kind of unauthorized error
     }
