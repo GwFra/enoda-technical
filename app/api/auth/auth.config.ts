@@ -5,6 +5,7 @@ export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/login",
   },
+  trustHost: true,
   callbacks: {
     async authorized({ request }: { request: NextRequest }) {
       const isOnHome = request.nextUrl.pathname.startsWith("/home");
