@@ -1,17 +1,17 @@
 "use client";
 
-import axios from "axios";
 import React from "react";
 import DisplayContainer from "@/app/ui/listings/container";
+import { request } from "@/app/lib/request";
 
 export default function BidsPage() {
   const [bids, setBids] = React.useState<any>([]);
   React.useEffect(() => {
     const getBids = async () => {
-      const { data } = await axios.get(`${process.env.BACKEND_URL}/bids`);
+      const { data } = await request("get", "bids");
       const getListingsWithBids = data.map((bid: any) => {
         const { listingId } = bid;
-        return axios.get(`${process.env.BACKEND_URL}/listings/${listingId}`);
+        return request("get", `listings/${listingId}`);
       });
 
       const listingsRequests = await Promise.all(getListingsWithBids);

@@ -10,10 +10,10 @@ export default function HomeLayout({
 }) {
   return (
     <Grid container>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <SideBar />
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={9}>
         {children}
       </Grid>
     </Grid>

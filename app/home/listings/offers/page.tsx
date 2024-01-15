@@ -1,16 +1,14 @@
 "use client";
 
-import DisplayContainer from "@/app/ui/listings/container";
-import axios from "axios";
 import React from "react";
+import DisplayContainer from "@/app/ui/listings/container";
+import { request } from "@/app/lib/request";
 
 export default function Offers() {
   const [offers, setOffers] = React.useState<any>([]);
   React.useEffect(() => {
     const getOffers = async () => {
-      const { data } = await axios.get(
-        `${process.env.BACKEND_URL}/listings/offers`
-      );
+      const { data } = await request("get", "listings/offers");
       setOffers(data);
     };
     getOffers();

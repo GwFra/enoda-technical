@@ -8,19 +8,19 @@ import {
   CardActions,
   CardContent,
   Paper,
-  // CardMedia,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Confirmation from "@/app/ui/confirmation/confirmation";
-import "dotenv/config";
+import Cookie from "universal-cookie";
+import { jwtDecode } from "jwt-decode";
 
 type Props = {
-  id: string | number;
+  id: string | number | undefined;
   title: string;
   quantity: number;
-  supplierId: number;
+  supplierId: number | string;
   cost: number;
   start: number;
   end: number;
@@ -28,15 +28,18 @@ type Props = {
   isOffer?: boolean;
   bidId?: number;
   accepted?: boolean;
-  refresh?: any;
 };
 
-function determineTiming(
-  hasStarted: boolean,
-  hasEnded: boolean,
-  start: number,
-  end: number
-) {
+interface ModalInfo {
+  isOpen: boolean;
+  type: string;
+  typeId?: string | number;
+}
+
+function determineTiming(start: number, end: number) {
+  const currentDate = Date.now();
+  const hasEnded = end < currentDate; // listing has closed
+  const hasStarted = start > currentDate; // listing has started
   if (!hasStarted) {
     // countdown to start - return start date and time Starting: ...
     return `Starting at: ${new Date(start).toLocaleString().split(",")[1]}`;
@@ -50,17 +53,21 @@ function determineTiming(
 }
 
 export default function InfoPreview(props: Props) {
-  const [confirmModal, setConfirmModal] = React.useState({
+  const pathname = usePathname();
+  const cookie = new Cookie();
+
+  const [confirmModal, setConfirmModal] = React.useState<ModalInfo>({
     isOpen: false,
     type: "",
     typeId: undefined,
   });
+  const token = cookie.get("access_token");
+  if (!token) return redirect("/login");
+  const user = jwtDecode(token);
+  const userId = user.sub;
 
-  const pathname = usePathname();
   const previewRegex = /(listings)\/([0-9])+/;
   const isPreview = previewRegex.test(pathname);
-  // spinner waiting for bid to be placed / input
-  // check if bid has already been placed
 
   const {
     id,
@@ -76,13 +83,9 @@ export default function InfoPreview(props: Props) {
     accepted,
   } = props;
 
-  const userId = 1000;
-  const currentDate = Date.now();
-  const hasEnded = end < currentDate; // listing has closed
-  const hasStarted = start > currentDate; // listing has started
-  const timingString = determineTiming(hasStarted, hasEnded, start, end);
+  const timingString = determineTiming(start, end);
 
-  const openModal = (type: string, typeId?: any) => {
+  const openModal = (type: string, typeId?: string | number) => {
     setConfirmModal({
       isOpen: true,
       type,
@@ -95,11 +98,7 @@ export default function InfoPreview(props: Props) {
 
   return (
     <>
-      <Confirmation
-        {...confirmModal}
-        handleClose={handleClose}
-        listingId={id}
-      />
+      <Confirmation {...confirmModal} handleClose={handleClose} />
       <Paper elevation={24} style={{ width: "100%" }}>
         <Card
           variant="outlined"
@@ -124,7 +123,9 @@ export default function InfoPreview(props: Props) {
                 )}
               </CardContent>
               <CardActions style={{ marginLeft: "auto", marginTop: "auto" }}>
-                {isBid ? (
+                {timingString === "Has ended" ? (
+                  <Typography>Bid ended</Typography>
+                ) : isBid ? (
                   accepted ? (
                     <Typography>Accepted!</Typography>
                   ) : (
@@ -152,7 +153,7 @@ export default function InfoPreview(props: Props) {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={() => openModal("bid")}
+                    onClick={() => openModal("bid", id)}
                   >
                     {"Place bid"}
                   </Button>
